@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #1e2936;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* focus visibility for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mammoth's raw docx-to-HTML output has no classes of its own — Tailwind's
+   preflight reset strips default browser styling from headings/tables/lists,
+   so without this the generated document preview would render as
+   undifferentiated plain text. Scoped to .docx-preview only. */
+.docx-preview h1,
+.docx-preview h2,
+.docx-preview h3 {
+  font-weight: 700;
+  margin: 1em 0 0.5em;
+  color: #1e344f;
+}
+.docx-preview h1 { font-size: 1.5rem; }
+.docx-preview h2 { font-size: 1.2rem; }
+.docx-preview h3 { font-size: 1.05rem; }
+.docx-preview p { margin: 0.5em 0; line-height: 1.6; }
+.docx-preview ol,
+.docx-preview ul {
+  margin: 0.5em 0 0.5em 1.5em;
+  list-style: revert;
+}
+.docx-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75em 0;
+}
+.docx-preview table td,
+.docx-preview table th {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  text-align: left;
+}
+.docx-preview img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5em 0;
+}
+
+/* Horizontal auto-scrolling updates ticker (UpdatesTicker.jsx). The item
+   list is rendered twice back-to-back, and this animates exactly -50% so
+   the loop point lines up seamlessly with no visible jump. */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker-scroll 32s linear infinite;
+}
+
+/* Print support (DocumentPreviewModal's Print button): hide everything
+   except the doc preview being printed. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-target,
+  .print-target * {
+    visibility: visible;
+  }
+  .print-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
